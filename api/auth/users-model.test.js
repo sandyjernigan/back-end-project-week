@@ -101,8 +101,10 @@ describe('Users Model', () => {
       };
 
       await Users.update(changeData, 1);
+
+      users = await db('users');
       
-      expect(users[0].id).toEqual({ 
+      expect(users[0]).toEqual({ 
         id: 1, 
         username: 'updateduser', 
         password: 'testpass'
@@ -131,9 +133,9 @@ describe('Users Model', () => {
       // test setup
       await db('users').insert(insertData);
 
-      const count = await Users.remove(1);
+      const user = await Users.remove(1);
 
-      expect(count).toBe(1);
+      expect(user.id).toBe(1);
     });
   })
 
