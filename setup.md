@@ -52,7 +52,7 @@ module.exports = {
 };
 ```
 
-### create migrations
+### Setup migrations
 
 #### npx knex migrate:make `migration-name`
 
@@ -73,4 +73,62 @@ exports.down = function(knex, Promise) {
 ```
 
 #### npx knex migrate:latest
+
+run `npx knex migrate:latest` to setup database table
+
 #### npx knex migrate:latest --env=testing
+
+run `npx knex migrate:latest --env=testing` to setup testing database table
+
+### Setup seeds
+
+#### npx knex seed:make 00-cleanup
+
+```javascript
+const cleaner = require('knex-cleaner');
+
+exports.seed = function(knex) {
+  return cleaner.clean(knex);
+};
+```
+
+#### npx knex seed:make 01-user -- This is just an example. Do not use in production
+
+```javascript
+exports.seed = function(knex, Promise) {
+  return knex('users').insert([
+    {
+      username: 'baseUser',
+      password: 'thiswillnotwork'
+    },
+  ]);
+};
+```
+
+#### npx knex seed:run
+
+After seeds are setup run `npx knex seed:run`
+Testing Database run `npx knex seed:run --env=testing`
+
+# Create Files for Server
+
+## .env
+
+```javascript
+JWT_SECRET='Cookie Monster wants a cookie.'
+PORT=3000
+```
+
+## index.js
+
+```javascript
+require('dotenv').config();
+
+const server = require('./api/server.js');
+
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`\n=== Server listening on port ${PORT} ===\n`);
+});
+```
+
