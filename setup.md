@@ -205,7 +205,7 @@ describe('Server', () => {
 
 ## Auth Router
 
-### ./auth/auth-router.js
+### ./api/auth/auth-router.js
 
 ```javascript
 const router = require('express').Router();
@@ -274,7 +274,7 @@ function generateToken(user) {
 module.exports = router;
 ```
 
-### ./auth/auth-router.test.js
+### ./api/auth/auth-router.test.js
 
 ```javascript
 const request = require('supertest');
@@ -326,8 +326,7 @@ describe('Auth Router', () => {
 });
 ```
 
-## authenticate-middleware
-### ./auth/authenticate-middleware.js
+### ./api/auth/authenticate-middleware.js
 
 ```javascript
 // middleware to check if the user is logged in
@@ -358,6 +357,13 @@ module.exports = (req, res, next) => {
   }
 
 };
+```
+
+## User Models 
+### ./api/auth/users-model.js
+
+```javascript
+// 
 ```
 
 ## Header 
