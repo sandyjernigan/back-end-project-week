@@ -144,7 +144,9 @@ const environment = process.env.DB_ENV || 'development';
 module.exports = knex(knexConfig[environment]);
 ```
 
-## ./api/server.js
+## Server
+
+### ./api/server.js
 
 ```javascript
 const express = require('express');
@@ -175,7 +177,7 @@ server.use('/api/auth', authRouter);
 module.exports = server;
 ```
 
-## ./api/server.test.js
+### ./api/server.test.js
 
 ```javascript
 // Testing for server.js
@@ -198,5 +200,128 @@ describe('Server', () => {
     })
   });
 
+});
+```
+
+## Auth Router
+
+### ./auth/auth-router.js
+
+```javascript
+const router = require('express').Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET || 'secret should be set in env';
+
+// User Models
+const Users = require('./users-model.js');
+
+router.post('/register', (req, res) => {
+  // implement registration
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 12);
+  user.password = hash;
+
+  Users.add(user)
+    .then(saved => {
+      // use function to generate token
+      const token = generateToken(saved);
+      res.status(201).json({user: saved, token});
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+router.post('/login', (req, res) => {
+  // implement login
+  let { username, password } = req.body;
+
+  Users.findBy({ username })
+    .first()
+    .then(user => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        // jwt should be generated
+        const token = generateToken(user);
+        res.status(200).json({
+          message: `Welcome ${user.username}!`,
+          token
+        });
+      } else {
+        res.status(401).json({ message: 'Invalid Request. Please check the username and password submitted.' });
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+function generateToken(user) {
+  const payload = {
+    sub: 'user token',
+    id: user.id,
+    username: user.username
+  };
+
+  const options = {
+    expiresIn: '1d', // expires in 1 day
+  };
+
+  // extract the secret away so it can be required and used where needed
+  return jwt.sign(payload, jwtSecret, options);
+}
+
+module.exports = router;
+```
+
+### ./auth/auth-router.test.js
+
+```javascript
+const request = require('supertest');
+const db = require('../database/dbConfig.js');
+
+const router = require('./auth-router.js');
+
+// test setup
+const testUser = {
+  username: 'user',
+  password: 'pass'
+};
+
+describe('Auth Router', () => {
+
+  beforeEach(async () => {
+    // wipe the database
+    await db('users').truncate();
+  })
+
+  // Add Testing for POST /api/auth/register
+  describe('test register', () => {
+        
+    it('should add user and return status 201', () => {
+      request(router)
+        .post('/api/auth/register')
+        .send(testUser)        
+        .set('Accept', 'application/json')
+        .expect(201);
+    })
+  });
+
+  // Add Testing for POST /api/auth/login
+  describe('test login', () => {
+        
+    it('should return user and return status 200', async () => {
+
+      // test setup first add user
+      await db('users').insert(testUser);
+
+      // test if user can login
+      const res = request(router)
+        .post('/api/auth/login')
+        .send(testUser)
+        .set('Accept', 'application/json')
+        .expect(200, testUser);
+    })
+  });
 });
 ```
