@@ -1,3 +1,5 @@
+// npx knex migrate:make [migration-name]
+
 exports.up = function(knex) {
   return knex.schema.createTable('users', users => {
     users.increments();
@@ -9,3 +11,6 @@ exports.up = function(knex) {
 exports.down = function(knex, Promise) {
   return knex.schema.dropTableIfExists('users');
 };
+
+// npx knex migrate:latest
+// npx knex migrate:latest --env=testing

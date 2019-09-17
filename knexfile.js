@@ -1,3 +1,5 @@
+// npx knex init
+
 module.exports = {
   development: {
     client: 'sqlite3',
