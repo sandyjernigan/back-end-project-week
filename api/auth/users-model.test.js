@@ -1,6 +1,6 @@
 // Testing for users model
 const request = require('supertest');
-const db = require('../data/dbConfig.js');
+const db = require('../../data/dbConfig.js');
 
 // Server file
 const Users = require('./users-model.js');
