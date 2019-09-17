@@ -143,3 +143,60 @@ const environment = process.env.DB_ENV || 'development';
 
 module.exports = knex(knexConfig[environment]);
 ```
+
+## ./api/server.js
+
+```javascript
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+
+// require router files
+const authenticate = require('../auth/authenticate-middleware.js');
+const authRouter = require('../auth/auth-router.js');
+
+const server = express();
+
+server.use(helmet());
+server.use(cors());
+server.use(express.json());
+
+// Base Route
+server.get('/', (req, res) => {
+  res.send("<div align=\'center\'>" + 
+    "<p>Hello World!</p>" + 
+    "<p>This is the Starting Page.</p>" +
+    "</div>");
+});
+
+// Routes
+server.use('/api/auth', authRouter);
+
+module.exports = server;
+```
+
+## ./api/server.test.js
+
+```javascript
+// Testing for server.js
+const request = require('supertest');
+
+// Server file
+const server = require('./server.js');
+
+describe('Server', () => {
+
+  describe('GET /', () => {
+    it('should run the testing env', () => {
+      expect(process.env.DB_ENV).toBe('testing');
+    })
+    
+    it('should return status 200', async () => {
+      const res = await request(server)
+        .get('/');
+      expect(res.status).toBe(200);
+    })
+  });
+
+});
+```
