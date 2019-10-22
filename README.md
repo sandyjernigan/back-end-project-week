@@ -4,21 +4,11 @@ This week you will build a backend for a note taking app called "Lambda Notes".
 
 You are to treat this week as if you are working at a company and the instructor is your client. The _Project Managers_ are acting as your company's project managers (duh!) and will be your main support throughout the week.
 
-The main objective of this week is to develop a backend to support the LambdaNotes app you built during the Front End project week, connect the two projects together, and add some additional features. You will use `Node.js`, `Express` and any other technologies you have learned to complete this assignment.
+The main objective of this week is to develop a backend to support the LambdaNotes app you built during the Front End project week, connect the two projects together, and add some additional features. You will use `Node.js`, `Express` and any other technologies you have learned to complete this assignment. 
 
-## Git Commits
+## Trello Board [https://trello.com/b/qCvJzRWF/lambda-notesbackend-sandy-jernigan]
 
-You are required to showcase progress with at least 4 commits a day. This will let your project manager know where you are and if you need help. This also allows the client to get progress reports from the company in a real world setting. This also protects you from losing your work if your computer fails.
-
-## Trello Set Up
-
-- Use your existing Trello account from the Front End Project, or create a new one.
-- Create a new board called "Lambda Notes(Backend) - {Your Name}".
-- Create lists titled `Backlog`,`To do`, `Blocked`, `In Progress`, and `Done`.
-- Fill in the `To do` list with the MVP features listed below.
-- Fill in the `backlog` list with all the extra features listed below.
-- Share your board with the project manager that has been assigned to you. If you have not been assigned yet, reach out to your Section Lead for guidance.
-- Add your Trello URL to your project's README.md file. Commit the change, push it to your repository & submit a pull request.
+https://trello.com/b/qCvJzRWF/lambda-notesbackend-sandy-jernigan
 
 ## Backend MVP Features:
 
